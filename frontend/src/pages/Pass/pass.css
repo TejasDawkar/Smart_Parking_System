@@ -1,0 +1,143 @@
+/* Full-page Centering */
+body {
+    background-color: #f5f5f5;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+/* Main Container */
+.pass-container {
+    background: white;
+    padding-top: 10px;
+    padding-left: 25px;
+    padding-right: 25px;
+    padding-bottom: 15px;
+    width: 400px;
+    /* height: 300px; */
+    text-align: center;
+    border-radius: 10px;
+    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.15);
+    font-family: "Arial", sans-serif;
+    margin-bottom: 20px; /* Space between sections */
+}
+
+/* Heading */
+h2 {
+    color: #050505;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+}
+
+/* Button Container */
+.pass-options {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+/* Button Styling */
+button {
+    flex: 1;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    background: #007bff;
+    color: white;
+    transition: 0.3s ease;
+}
+
+/* Button Hover Effect */
+button:hover {
+    background: #0056b3;
+}
+
+/* Disabled Input Field */
+.price-input {
+    width: 150px;
+    padding: 10px;
+    font-size: 16px;
+    text-align: center;
+    border: 2px solid #ccc;
+    border-radius: 6px;
+    margin: 15px auto;
+    background: #f0f0f0;
+    font-weight: bold;
+    color: #333;
+    display: block;
+}
+
+/* Generate Pass Button */
+.generate-btn {
+    background: #28a745;
+}
+
+.generate-btn:hover {
+    background: #218838;
+}
+
+/* 🎟️ Generated Pass Styling */
+.generated-pass {
+    width: 320px;
+    padding-top: 10px;
+    padding-left: 25px;
+    padding-right: 25px;
+    padding-bottom: 25px;
+    background: #28a745; /* Green background */
+    color: white;
+    border-radius: 10px;
+    text-align: left;
+    font-size: 16px;
+    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.15);
+    font-family: "Arial", sans-serif;
+}
+
+.generated-pass h2 {
+    color: white;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+/* Pass Details */
+.pass-details {
+    line-height: 1.8;
+    font-size: 16px;
+}
+
+.pass-details div {
+    display: flex;
+    justify-content: space-between;
+}
+
+.pass-details span {
+    font-weight: bold;
+    display: inline-block;
+    width: 150px; /* Align text */
+}
+
+.download-btn {
+    background: #ff9800;
+    color: white;
+    font-size: 16px;
+    /* padding: 10px; */
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: 0.3s;
+    display: block;
+    margin: 20px auto 0px;
+}
+
+.download-btn:hover {
+    background: #e68900;
+}
