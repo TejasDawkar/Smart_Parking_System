@@ -12,13 +12,16 @@ const Pass = () => {
     const userData = JSON.parse(localStorage?.getItem('User'));
     const [price, setPrice] = useState(0);
     const [pdfUrl, setPdfUrl] = useState("");
-    console.log(pdfUrl, 'PDFURL');
+    // console.log(pdfUrl, 'PDFURL');
     const passRef = useRef();
-    let isPassGenerated = true;
+    const [isPassGenerated, setIsPassGenerated] = useState(false);
+    const [isQRGenerated, setIsQRGenerated] = useState(false);
+    const [pdfInstance, setPdfInstance] = useState();
+
 
     const createPass = () => {
         console.log("Pass generated for:", vehicle, "Price:", price);
-        isPassGenerated = true;
+        setIsPassGenerated(true);
     };
 
     const passPrices = async () => {
@@ -30,19 +33,9 @@ const Pass = () => {
         }
     };
 
-    // const downloadPDF = () => {
-    //     const passElement = passRef.current;
-    //     html2canvas(passElement, { scale: 2 }).then(canvas => {
-    //         const imgData = canvas.toDataURL("image/png");
-    //         const pdf = new jsPDF("p", "mm", "a4");
-    //         pdf.addImage(imgData, "PNG", 10, 10, 190, 100);
-    //         pdf.save(`${vehicle}_pass.pdf`);
-    //     });
-    // };
     const uploadPDF = async (pdfBlob) => {
         const formData = new FormData();
         formData.append("pdf", pdfBlob, "vehicle_pass.pdf");
-    
         try {
             const response = await axios.post("http://localhost:5000/files/upload", formData, {
                 headers: {
@@ -50,31 +43,30 @@ const Pass = () => {
                 },
             });
             const { fileUrl } = response.data;
-
-            // Set QR code to use the public URL instead of a blob
             setPdfUrl(fileUrl);
-            console.log("File uploaded successfully:", response.data);
+            setIsQRGenerated(true);
+            // console.log("File uploaded successfully:", response.data);
         } catch (error) {
             console.error("Error uploading file:", error);
         }
     };
-    const downloadPDF = () => {
+    const generatePDF = () => {
         const passElement = passRef.current;
         html2canvas(passElement, {scale: 2}).then(canvas => {
             const image = canvas.toDataURL("image/png");
             const pdf = new jsPDF("p", "mm", "a4");
             pdf.addImage(image, "PNG", 10, 10, 190, 100);
+            setPdfInstance(pdf);
             const pdfBlob = pdf.output("blob");
             uploadPDF(pdfBlob);
-
-            // Create URL for local download
-            // const pdfBlobURL = URL.createObjectURL(pdfBlob);
-            // localStorage.setItem("pdfUrl", pdfBlobURL);
-            // setPdfUrl(pdfBlobURL);
-
-            // Trigger download
-            pdf.save("vehicle_pass.pdf");
+            // pdf.save("vehicle_pass.pdf");
         })
+    }
+
+    const downloadPDF = () => {
+        if(pdfInstance){
+            pdfInstance.save("vehicle_pass.pdf");
+        }
     }
 
     useEffect(() => {
@@ -105,14 +97,28 @@ const Pass = () => {
                     <span>Type:</span> <span>{userData?.vehicle_type}</span> <br/>
                     <span>Pass Duration:</span> <span>{userData?.vehicle_type}</span> 
                 </div>
-                <button className="download-btn" onClick={downloadPDF}>Download PDF</button>
             </div>
         }
-        {pdfUrl &&
-        <div>
-            <QRCodeCanvas value={pdfUrl} size={150} />
-        </div>
-        }
+
+        {isPassGenerated && !isQRGenerated && (
+            <button className="download-btn" onClick={generatePDF}>Generate QR Code</button>
+        )}
+
+        {isQRGenerated &&
+        <div className="qr-code">
+            <h3>Scan QR to Download..</h3>
+                {pdfUrl ? (
+                <>
+                    <QRCodeCanvas value={pdfUrl} size={200} />
+                </>
+            ) : (
+                <p>Generating QR Code...</p>
+            )}
+        </div>}
+
+        {isQRGenerated && (
+            <button className="download-btn" onClick={downloadPDF}>Download Pass</button>
+        )}
     </>
     );
 };
